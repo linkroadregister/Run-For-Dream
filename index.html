@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RUN FOR DREAM – Registration</title>
+<style>
+  :root{
+    /* === Assets (ใช้ lh3.googleusercontent เพื่อแสดงไฟล์จาก Drive) === */
+    --bg-url:  url("https://lh3.googleusercontent.com/d/1DNFDj8qowXiaA-UUslLVL9N1tQNyXJE5");
+    --logo-url:url("https://lh3.googleusercontent.com/d/1CwHuiswWfbkS8Ncz_5MnPmJ3oDgvWbJ_");
+
+    --ink:#0d1b2a;
+    --btn-from:#8e0e0e; --btn-to:#c91919;
+  }
+
+  html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans Thai',Arial,sans-serif;background:#000;color:var(--ink)}
+  body{display:flex;align-items:center;justify-content:center}
+  .stage{position:relative;max-width:100vw;max-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .bg{max-width:100vw;max-height:100vh;width:auto;height:auto;object-fit:contain;display:block}
+
+  .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .stack{pointer-events:auto;display:flex;flex-direction:column;align-items:center;max-height:90%;overflow:auto;padding:8px 12px}
+
+  .brand{width:min(28vw,220px);aspect-ratio:220/96;background:var(--logo-url) center/contain no-repeat;margin-bottom:8px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.25))}
+  .card{width:min(520px,80vw);background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-radius:20px;box-shadow:0 12px 30px rgba(0,0,0,.25);padding:22px}
+  .title{text-align:center;margin:0 0 12px;font-weight:900;font-size:24px}
+  .grid{display:grid;gap:10px}
+  .pill{height:54px;border:none;border-radius:999px;background:#fff;padding:0 16px;box-shadow:0 8px 20px rgba(0,0,0,.18);font-size:16px;outline:none}
+  .btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:800;border:0;cursor:pointer}
+  .btn-primary{color:#fff;background:linear-gradient(to bottom,var(--btn-from),var(--btn-to));box-shadow:0 10px 24px rgba(0,0,0,.25)}
+  .btn-outline{background:#fff;color:#b21515;border:2px solid #b21515}
+  .row{display:flex;justify-content:space-between;gap:12px;margin-top:12px;align-items:center}
+  .err{color:#d90429;font-size:13px;margin-top:-6px;display:none}
+  .hidden{display:none!important}
+  .muted{color:#6b7280;font-size:13px}
+  .center{text-align:center}
+
+  /* ลิงก์ดำเส้นใต้ (เปิด PDF modal) */
+  .cta-link{color:#000;font-weight:700;text-decoration:underline;cursor:pointer}
+  .cta-link:hover{text-decoration:none;opacity:.85}
+  .cta-row{margin:6px 0 2px}
+
+  /* Success page */
+  .success-h1{margin:0;font-size:64px;font-weight:1000;color:#d02020;text-align:center;letter-spacing:.5px}
+  .success-h2{margin:14px 0 26px;font-size:40px;font-weight:900;text-align:center;color:#111}
+  .success-p{font-size:28px;text-align:center;color:#111;margin:12px 0}
+  .success-muted{font-size:28px;text-align:center;color:#111;margin:4px 0}
+  .success-tel{font-size:40px;text-align:center;margin:10px 0 4px;font-weight:900}
+
+  /* PDF Modal */
+  .pdf-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:9999}
+  .pdf-modal{width:min(1100px,92vw);height:min(90vh,820px);background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden}
+  .pdf-modal header{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#111827;color:#fff}
+  .pdf-modal .title{font-weight:800}
+  .iconbtn{border:0;background:#374151;color:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
+  .iconbtn:hover{filter:brightness(1.05)}
+  .pdf-modal .frame{width:100%;height:calc(100% - 52px);border:0}
+
+  @media (max-width:480px){
+    .success-h1{font-size:46px}.success-h2{font-size:28px}
+    .success-p,.success-muted{font-size:22px}.success-tel{font-size:30px}
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <img id="bg" class="bg" alt="background">
+  <div class="overlay">
+    <div class="stack">
+      <div class="brand"></div>
+
+      <!-- STEP 1 -->
+      <section class="card" id="step1">
+        <h2 class="title">ข้อมูลการสมัคร</h2>
+        <div class="grid">
+          <select id="raceType" class="pill">
+            <option value="">เลือกประเภทการแข่งขัน</option>
+            <option>FUNRUN 5 KM</option>
+            <option>MINI MARATHON 10 KM</option>
+          </select>
+
+          <!-- ลิงก์ดำเส้นใต้ (เปิด PDF) -->
+          <p class="cta-row">
+            <span class="cta-link" id="pdpaLink">โปรดอ่านข้อมูลรายละเอียดเพิ่มเติม</span>
+          </p>
+
+          <!-- ยอมรับ PDPA -->
+          <label><input type="checkbox" id="agreePdpa"> ฉันได้อ่านและยอมรับ ข้อมูล PDPA</label>
+          <div id="errAgreePdpa" class="err">กรุณายอมรับ PDPA ก่อนดำเนินการต่อ</div>
+        </div>
+        <div class="center" style="margin-top:10px">
+          <button class="btn btn-primary" id="next1">SUBMIT</button>
+        </div>
+      </section>
+
+      <!-- STEP 2 -->
+      <section class="card hidden" id="step2">
+        <h2 class="title">ข้อมูลส่วนบุคคล</h2>
+        <div class="grid">
+          <input id="fullname" class="pill" placeholder="ชื่อ–นามสกุล">
+          <input id="gender"   class="pill" placeholder="เพศ">
+          <input id="nation"   class="pill" placeholder="สัญชาติ">
+          <input id="empId"    class="pill" placeholder="รหัสพนักงาน">
+          <input id="dept"     class="pill" placeholder="แผนก">
+          <input id="tel"      class="pill" placeholder="เบอร์โทรศัพท์ (10 หลัก)" inputmode="numeric">
+          <input id="email"    class="pill" placeholder="อีเมล (ถ้ามี)" type="email">
+          <!-- ลิงก์ข้อมูลเพิ่มเติม (ถ้ามีไฟล์กติกา/คู่มือ) -->
+          <p class="cta-row hidden" id="infoRow">
+            <span class="cta-link" id="infoLink">โปรดอ่านข้อมูลรายละเอียดเพิ่มเติม</span>
+          </p>
+        </div>
+        <div class="row">
+          <button class="btn btn-outline" id="back2">BACK</button>
+          <button class="btn btn-primary" id="next2">NEXT</button>
+        </div>
+      </section>
+
+      <!-- STEP 3 -->
+      <section class="card hidden" id="step3">
+        <h2 class="title">ข้อมูลด้านสุขภาพ</h2>
+        <div class="grid">
+          <input id="blood"    class="pill" placeholder="กรุ๊ปเลือด">
+          <input id="disease"  class="pill" placeholder="โรคประจำตัว">
+          <input id="emerName" class="pill" placeholder="ชื่อผู้ติดต่อกรณีฉุกเฉิน">
+          <input id="emerTel"  class="pill" placeholder="เบอร์โทรติดต่อฉุกเฉิน" inputmode="numeric">
+        </div>
+        <div class="row">
+          <button class="btn btn-outline" id="back3">BACK</button>
+          <button class="btn btn-primary" id="next3">NEXT</button>
+        </div>
+      </section>
+
+      <!-- STEP 4 -->
+      <section class="card hidden" id="step4">
+        <h2 class="title">ข้อมูลทั่วไป</h2>
+        <div class="grid">
+          <select id="shirtSize" class="pill">
+            <option value="">เลือกขนาดเสื้อ</option>
+            <option>S</option><option>M</option><option>L</option>
+            <option>XL</option><option>2XL</option><option>3XL</option>
+          </select>
+          <div class="pill" style="height:auto;padding:12px 16px">
+            <label><input type="radio" name="fancy" value="yes"> เข้าร่วมประกวดนักวิ่งแฟนซี</label><br>
+            <label><input type="radio" name="fancy" value="no"> ไม่เข้าร่วมประกวด</label>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn btn-outline" id="back4">BACK</button>
+          <button class="btn btn-primary" id="submitAll">SUBMIT</button>
+        </div>
+      </section>
+
+      <!-- STEP 5 -->
+      <section class="card hidden" id="step5">
+        <h1 class="success-h1">ลงทะเบียนสำเร็จ</h1>
+        <h2 class="success-h2">ขอบคุณที่ท่านตอบรับเข้าร่วมกิจกรรม</h2>
+        <p class="success-p">หากต้องการสอบถามข้อมูลเพิ่มเติม</p>
+        <p class="success-muted">กรุณาติดต่อ บริษัท ลิงก์โร้ดทราเวล จำกัด</p>
+        <p class="success-tel">096–750–5993</p>
+        <div class="center" style="margin-top:12px">
+          <button class="btn btn-outline" id="restart">เริ่มใหม่</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- PDF Modal -->
+<div class="pdf-modal-backdrop" id="pdfModalBackdrop" role="dialog" aria-modal="true">
+  <div class="pdf-modal" role="document">
+    <header>
+      <div class="title" id="pdfModalTitle">PDF</div>
+      <div>
+        <a id="pdfOpenNewTab" class="iconbtn" target="_blank" rel="noopener">เปิดแท็บใหม่</a>
+        <button type="button" class="iconbtn" onclick="pdfModalClose()">ปิด</button>
+      </div>
+    </header>
+    <iframe id="pdfFrame" class="frame" src=""></iframe>
+  </div>
+</div>
+
+<script>
+/* ===== Config: ใส่ลิงก์ PDF ถ้ามี ===== */
+const PDF_PDPA_URL = "";   // ใส่ลิงก์ /preview ของไฟล์ PDPA (ถ้ายังไม่มีปล่อยว่าง)
+const PDF_INFO_URL = "";   // ใส่ลิงก์ /preview ของไฟล์ข้อมูลเพิ่มเติม/กติกา
+
+/* ===== Pipedream Endpoint (ไม่มี Secret) ===== */
+const PIPEDREAM_URL = "https://eot963t8euqdyl6.m.pipedream.net"; // แทนที่ด้วย URL ของคุณ
+
+/* ===== ภาพพื้นหลังจาก CSS var ===== */
+(function(){
+  var v=getComputedStyle(document.documentElement).getPropertyValue('--bg-url').trim();
+  if(v.startsWith('url(')) v=v.slice(4,-1).replace(/^"|"$/g,'');
+  document.getElementById('bg').src=v;
+})();
+
+/* ===== state + autosave ===== */
+var storageKey='rfd-reg-v1';
+var init={
+  raceType:'', agreePdpa:false,
+  fullname:'', gender:'', nation:'', empId:'', dept:'', tel:'', email:'',
+  blood:'', disease:'', emerName:'', emerTel:'',
+  shirtSize:'', fancy:''
+};
+var data=load()||init;
+function save(){ localStorage.setItem(storageKey, JSON.stringify(data)); }
+function load(){ try{ return JSON.parse(localStorage.getItem(storageKey)); }catch(e){ return null; } }
+function qs(id){ return document.getElementById(id); }
+function show(id){ ['step1','step2','step3','step4','step5'].forEach(x=>qs(x).classList.add('hidden')); qs(id).classList.remove('hidden'); }
+
+/* ===== validators ===== */
+function isPhone10(v){ return /^\d{10}$/.test(String(v||'').trim()); }
+function isEmail(v){ return !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||'').trim()); } // optional
+
+/* ===== sync & collect ===== */
+function sync(){
+  qs('raceType').value=data.raceType; qs('agreePdpa').checked=!!data.agreePdpa;
+  qs('fullname').value=data.fullname; qs('gender').value=data.gender; qs('nation').value=data.nation;
+  qs('empId').value=data.empId; qs('dept').value=data.dept; qs('tel').value=data.tel; qs('email').value=data.email;
+  qs('blood').value=data.blood; qs('disease').value=data.disease; qs('emerName').value=data.emerName; qs('emerTel').value=data.emerTel;
+  qs('shirtSize').value=data.shirtSize;
+  if(data.fancy){ var r=document.querySelector('input[name="fancy"][value="'+data.fancy+'"]'); if(r) r.checked=true; }
+  // ลิงก์ PDF (ซ่อนถ้าไม่ตั้งค่า)
+  if(PDF_PDPA_URL){ qs('pdpaLink').onclick=()=>pdfModalOpen(PDF_PDPA_URL,'ข้อมูล PDPA'); }
+  else{ qs('pdpaLink').parentElement.classList.add('hidden'); }
+  if(PDF_INFO_URL){ qs('infoRow').classList.remove('hidden'); qs('infoLink').onclick=()=>pdfModalOpen(PDF_INFO_URL,'รายละเอียดเพิ่มเติม'); }
+}
+function collectStep1(){ data.raceType=qs('raceType').value; data.agreePdpa=qs('agreePdpa').checked; save(); }
+function collectStep2(){
+  data.fullname=qs('fullname').value.trim();
+  data.gender=qs('gender').value.trim();
+  data.nation=qs('nation').value.trim();
+  data.empId=qs('empId').value.trim();
+  data.dept=qs('dept').value.trim();
+  data.tel=qs('tel').value.replace(/[^\d]/g,'');
+  data.email=qs('email').value.trim();
+  save();
+}
+function collectStep3(){
+  data.blood=qs('blood').value.trim();
+  data.disease=qs('disease').value.trim();
+  data.emerName=qs('emerName').value.trim();
+  data.emerTel=qs('emerTel').value.replace(/[^\d]/g,'');
+  save();
+}
+function collectStep4(){
+  data.shirtSize=qs('shirtSize').value;
+  var r=document.querySelector('input[name="fancy"]:checked'); data.fancy=r?r.value:'';
+  save();
+}
+
+/* ===== nav ===== */
+qs('tel').addEventListener('input',e=>e.target.value=e.target.value.replace(/[^\d]/g,''));
+qs('emerTel').addEventListener('input',e=>e.target.value=e.target.value.replace(/[^\d]/g,''));
+
+qs('next1').onclick=function(){
+  collectStep1();
+  var ok = data.raceType && data.agreePdpa;
+  qs('errAgreePdpa').style.display = data.agreePdpa ? 'none':'block';
+  if(!ok) return;
+  show('step2'); sync();
+};
+qs('back2').onclick=function(){ show('step1'); sync(); };
+qs('next2').onclick=function(){
+  collectStep2();
+  var ok = data.fullname && isPhone10(data.tel) && isEmail(data.email);
+  if(!ok){ alert('กรุณากรอก ชื่อ–นามสกุล / เบอร์โทร 10 หลัก และอีเมลให้ถูกต้อง (ถ้ามี)'); return; }
+  show('step3'); sync();
+};
+qs('back3').onclick=function(){ show('step2'); sync(); };
+qs('next3').onclick=function(){
+  collectStep3();
+  var ok = data.emerName && isPhone10(data.emerTel);
+  if(!ok){ alert('กรุณากรอกผู้ติดต่อฉุกเฉินและเบอร์ 10 หลัก'); return; }
+  show('step4'); sync();
+};
+qs('back4').onclick=function(){ show('step3'); sync(); };
+qs('submitAll').onclick=async function(){
+  collectStep4();
+  if(!data.shirtSize){ alert('กรุณาเลือกขนาดเสื้อ'); return; }
+
+  var payload = Object.assign({}, data);
+
+  disableButtons(true);
+  try {
+    const res = await fetch(PIPEDREAM_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      mode: 'cors', // ต้องเปิด CORS ที่ Pipedream
+    });
+
+    let out = {};
+    try { out = await res.json(); } catch(_) { /* ถ้า backend ส่ง non-JSON ก็ข้าม */ }
+
+    if (!res.ok || (out.ok === false)) {
+      throw new Error((out && out.message) ? out.message : ('HTTP '+res.status));
+    }
+
+    localStorage.removeItem(storageKey);
+    data=JSON.parse(JSON.stringify(init));
+    show('step5'); sync();
+  } catch (err) {
+    alert('บันทึกล้มเหลว: ' + (err && err.message ? err.message : err));
+  } finally {
+    disableButtons(false);
+  }
+};
+qs('restart').onclick=function(){
+  localStorage.removeItem(storageKey); data=JSON.parse(JSON.stringify(init)); show('step1'); sync();
+};
+
+function disableButtons(dis){ document.querySelectorAll('button').forEach(b=>b.disabled=!!dis); }
+
+/* ===== PDF Modal ===== */
+(function(){
+  const backdrop=qs('pdfModalBackdrop'), frame=qs('pdfFrame'), openNewTab=qs('pdfOpenNewTab');
+  let last=null;
+  window.pdfModalOpen=function(url,title){ if(!url) return;
+    document.getElementById('pdfModalTitle').textContent=title||'PDF';
+    frame.src=url; openNewTab.href=url.replace('/preview','/view'); last=document.activeElement;
+    backdrop.style.display='flex'; document.addEventListener('keydown',esc,{once:true});
+  };
+  window.pdfModalClose=function(){ backdrop.style.display='none'; frame.src=''; if(last&&last.focus) last.focus(); };
+  function esc(e){ if(e.key==='Escape') pdfModalClose(); }
+  backdrop.addEventListener('click',e=>{ if(e.target===backdrop) pdfModalClose(); });
+})();
+
+/* init */
+(function(){
+  sync(); show('step1');
+})();
+</script>
+</body>
+</html>
